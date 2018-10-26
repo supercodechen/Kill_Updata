@@ -19,29 +19,6 @@ void CWinmain::OnPreStart()
 }
 void CWinmain::Start()
 {
-	DWORD Pid = -1;
-	HANDLE hSnap = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
-	PROCESSENTRY32 lPrs;
-	ZeroMemory(&lPrs, sizeof(lPrs));
-	lPrs.dwSize = sizeof(lPrs);
-	Process32First(hSnap, &lPrs);
-	while (Process32Next(hSnap, &lPrs))
-	{
-		if (_tcscmp(lPrs.szExeFile, L"Windows10UpgraderApp.exe") == 0 || 
-			_tcscmp(lPrs.szExeFile, L"software_reporter_tool.exe") == 0 ||
-			_tcscmp(lPrs.szExeFile, L"MSOSYNC.EXE") == 0 ||
-			_tcscmp(lPrs.szExeFile, L"SohuNews.exe") == 0)
-		{
-			HANDLE hProcess = OpenProcess(PROCESS_ALL_ACCESS, TRUE, lPrs.th32ProcessID);
-			if (hProcess == NULL)
-			{
-				return;
-			}
-			TerminateProcess(hProcess, -1);
-			CloseHandle(hProcess);
-		}
-	}
-	CloseHandle(hSnap);
 	return;
 }
 void CWinmain::OnEnd()
